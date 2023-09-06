@@ -1,7 +1,10 @@
 const express = require("express");
 const errorHandler = require("./middlewear/errorHandler");
+const connectDB = require("./config/dbConnection");
 
-// const dotenv = require("dotenv").config();
+const dotenv = require("dotenv").config();
+
+connectDB();
 
 const app = express();
 
