@@ -21,9 +21,14 @@ const createContact = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("All fields are mandatory!");
   }
-  res.status(201).json({
-    message: "Create contact",
+
+  const contact = await Contact.create({
+    name,
+    email,
+    phone,
   });
+
+  res.status(201).json(contact);
 });
 
 //@desc Get an individual contact
@@ -31,9 +36,12 @@ const createContact = asyncHandler(async (req, res) => {
 //@access public
 
 const getContact = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: `Get contact for id ${req.params.id}`,
-  });
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("contact not found!");
+  }
+  res.status(200).json(contact);
 });
 
 //@desc Update an individual contact
@@ -41,9 +49,19 @@ const getContact = asyncHandler(async (req, res) => {
 //@access public
 
 const updateContact = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: `Updated contact ${req.params.id}`,
-  });
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Can not Find the data!");
+  }
+
+  const updatedContact = await Contact.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+  res.status(200).json(updateContact);
 });
 
 //@desc Delete an individual contact
@@ -51,9 +69,14 @@ const updateContact = asyncHandler(async (req, res) => {
 //@access public
 
 const deleteContact = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: `Deleted contact ${req.params.id}`,
-  });
+  const contact = await Contact.findById(req.params.id);
+  if (!contact) {
+    res.status(404);
+    throw new Error("Can not Find the data!");
+  }
+  await Contact.deleteOne();
+
+  res.status(200).json(contact);
 });
 
 module.exports = {
