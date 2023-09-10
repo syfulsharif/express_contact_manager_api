@@ -21,8 +21,8 @@ const loginUser = asyncHandler(async (req, res) => {
   });
 });
 
-//@desc Login a user
-//@route POST /api/users/login
+//@desc Current User Data
+//@route GET /api/users/current
 //@access public
 
 const currentUser = asyncHandler(async (req, res) => {
